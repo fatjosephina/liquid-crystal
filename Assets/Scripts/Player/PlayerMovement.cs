@@ -33,6 +33,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerInput.moved += OnMoved;
+        PlayerInput.moved -= OnMoved;
     }
 }

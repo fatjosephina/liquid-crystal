@@ -35,6 +35,24 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraMoveX"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""e2eb789f-1d88-4304-9420-8555ea953da2"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraMoveY"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""ff704db1-eb02-4245-8c3a-356a46279fe5"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -103,6 +121,50 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fa31d57-8603-4d95-af46-c4227cea94f9"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f8ab836-b9d2-4d50-8015-70d61c122eec"",
+                    ""path"": ""<Gamepad>/rightStick/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e54fcc8-f4ab-43c0-abb0-d1aef6ebe5f7"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c85e852-6bbf-4e9e-941f-48f802c312f4"",
+                    ""path"": ""<Gamepad>/dpad/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMoveY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -112,6 +174,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         // InGame
         m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
         m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
+        m_InGame_CameraMoveX = m_InGame.FindAction("CameraMoveX", throwIfNotFound: true);
+        m_InGame_CameraMoveY = m_InGame.FindAction("CameraMoveY", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -172,11 +236,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_InGame;
     private IInGameActions m_InGameActionsCallbackInterface;
     private readonly InputAction m_InGame_Move;
+    private readonly InputAction m_InGame_CameraMoveX;
+    private readonly InputAction m_InGame_CameraMoveY;
     public struct InGameActions
     {
         private @PlayerInputActions m_Wrapper;
         public InGameActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_InGame_Move;
+        public InputAction @CameraMoveX => m_Wrapper.m_InGame_CameraMoveX;
+        public InputAction @CameraMoveY => m_Wrapper.m_InGame_CameraMoveY;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -189,6 +257,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnMove;
+                @CameraMoveX.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveX;
+                @CameraMoveX.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveX;
+                @CameraMoveX.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveX;
+                @CameraMoveY.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveY;
+                @CameraMoveY.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveY;
+                @CameraMoveY.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveY;
             }
             m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -196,6 +270,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @CameraMoveX.started += instance.OnCameraMoveX;
+                @CameraMoveX.performed += instance.OnCameraMoveX;
+                @CameraMoveX.canceled += instance.OnCameraMoveX;
+                @CameraMoveY.started += instance.OnCameraMoveY;
+                @CameraMoveY.performed += instance.OnCameraMoveY;
+                @CameraMoveY.canceled += instance.OnCameraMoveY;
             }
         }
     }
@@ -203,5 +283,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     public interface IInGameActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnCameraMoveX(InputAction.CallbackContext context);
+        void OnCameraMoveY(InputAction.CallbackContext context);
     }
 }
