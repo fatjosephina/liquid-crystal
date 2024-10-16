@@ -36,8 +36,7 @@ public class FirstPersonCamera : MonoBehaviour
 
         xRotation -= lookY;
         xRotation = Mathf.Clamp(xRotation, -xClamp, xClamp);
-        Vector3 targetRotation = playerBody.eulerAngles;
-        targetRotation.x = xRotation;
+        Vector3 targetRotation = new Vector3(xRotation, 0f, 0f);
         transform.localRotation = Quaternion.Euler(targetRotation);
     }
 

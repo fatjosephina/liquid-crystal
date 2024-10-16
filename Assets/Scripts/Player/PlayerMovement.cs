@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 muscleForce = new Vector3(moveInput.x, 0f, moveInput.y) * moveForce * Time.fixedDeltaTime;
+        Vector3 muscleForce = (transform.right * moveInput.x + transform.forward * moveInput.y) * moveForce * Time.fixedDeltaTime;
         rb.AddForce(muscleForce, ForceMode.Acceleration);
     }
 

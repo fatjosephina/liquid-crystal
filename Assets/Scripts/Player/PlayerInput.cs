@@ -29,6 +29,12 @@ public class PlayerInput : MonoBehaviour
             moved?.Invoke();
         };
 
+        inGame.Move.canceled += ctx =>
+        {
+            MoveInput = ctx.ReadValue<Vector2>();
+            moved?.Invoke();
+        };
+
         inGame.CameraMoveX.performed += ctx =>
         {
             CameraMoveInput = new Vector2(ctx.ReadValue<float>(), CameraMoveInput.y);
