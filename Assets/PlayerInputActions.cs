@@ -53,6 +53,24 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Fire1"",
+                    ""type"": ""Button"",
+                    ""id"": ""316c42f7-770f-4735-9950-a1e8ee2e6dcd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Fire2"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ad371ca-c42b-4745-b867-389053fc79a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,6 +183,50 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""CameraMoveY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd52a369-0761-4f69-a348-7cfe37011ae6"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8dc27d72-a420-4b63-abba-a476427af430"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a170b97-d8f4-43ce-a1ce-5fc7d67e3192"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46a6761a-e061-45e3-b00a-5fef0a875fe2"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -176,6 +238,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
         m_InGame_CameraMoveX = m_InGame.FindAction("CameraMoveX", throwIfNotFound: true);
         m_InGame_CameraMoveY = m_InGame.FindAction("CameraMoveY", throwIfNotFound: true);
+        m_InGame_Fire1 = m_InGame.FindAction("Fire1", throwIfNotFound: true);
+        m_InGame_Fire2 = m_InGame.FindAction("Fire2", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,6 +302,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Move;
     private readonly InputAction m_InGame_CameraMoveX;
     private readonly InputAction m_InGame_CameraMoveY;
+    private readonly InputAction m_InGame_Fire1;
+    private readonly InputAction m_InGame_Fire2;
     public struct InGameActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -245,6 +311,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_InGame_Move;
         public InputAction @CameraMoveX => m_Wrapper.m_InGame_CameraMoveX;
         public InputAction @CameraMoveY => m_Wrapper.m_InGame_CameraMoveY;
+        public InputAction @Fire1 => m_Wrapper.m_InGame_Fire1;
+        public InputAction @Fire2 => m_Wrapper.m_InGame_Fire2;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +331,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @CameraMoveY.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveY;
                 @CameraMoveY.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveY;
                 @CameraMoveY.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnCameraMoveY;
+                @Fire1.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnFire1;
+                @Fire1.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnFire1;
+                @Fire1.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnFire1;
+                @Fire2.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnFire2;
+                @Fire2.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnFire2;
+                @Fire2.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnFire2;
             }
             m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,6 +350,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @CameraMoveY.started += instance.OnCameraMoveY;
                 @CameraMoveY.performed += instance.OnCameraMoveY;
                 @CameraMoveY.canceled += instance.OnCameraMoveY;
+                @Fire1.started += instance.OnFire1;
+                @Fire1.performed += instance.OnFire1;
+                @Fire1.canceled += instance.OnFire1;
+                @Fire2.started += instance.OnFire2;
+                @Fire2.performed += instance.OnFire2;
+                @Fire2.canceled += instance.OnFire2;
             }
         }
     }
@@ -285,5 +365,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnCameraMoveX(InputAction.CallbackContext context);
         void OnCameraMoveY(InputAction.CallbackContext context);
+        void OnFire1(InputAction.CallbackContext context);
+        void OnFire2(InputAction.CallbackContext context);
     }
 }

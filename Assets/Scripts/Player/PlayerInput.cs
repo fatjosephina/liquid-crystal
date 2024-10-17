@@ -15,6 +15,7 @@ public class PlayerInput : MonoBehaviour
 
     public static Action moved;
     public static Action cameraMoved;
+    public static Action fired1;
 
     private void Awake()
     {
@@ -45,6 +46,11 @@ public class PlayerInput : MonoBehaviour
         {
             CameraMoveInput = new Vector2(CameraMoveInput.x, ctx.ReadValue<float>());
             cameraMoved?.Invoke();
+        };
+
+        inGame.Fire1.performed += ctx =>
+        {
+            fired1?.Invoke();
         };
     }
 }
